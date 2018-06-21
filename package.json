@@ -4,6 +4,10 @@
   "author": "TrustNote",
   "version": "0.1.0",
   "main": "start.js",
+  "scripts": {
+    "sync": "node start.js",
+    "rpc": "node rpc_service.js"
+  },
   "keywords": [
     "wallet",
     "headless",
