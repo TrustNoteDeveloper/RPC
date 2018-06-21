@@ -1,0 +1,32 @@
+{
+  "name": "lightwallet",
+  "description": "TrustNote headless wallet",
+  "author": "TrustNote",
+  "version": "0.1.0",
+  "main": "start.js",
+  "keywords": [
+    "wallet",
+    "headless",
+    "trustnote",
+    "light node"
+  ],
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/trustnote/trustnote-headless.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/trustnote/trustnote-headless/issues"
+  },
+  "browser": {
+    "request": "browser-request",
+    "secp256k1": "secp256k1/js"
+  },
+  "dependencies": {
+    "trustnote-common": "git+https://github.com/trustnote/trustnote-common.git",
+    "bitcore-lib": "^0.13.14",
+    "bitcore-mnemonic": "~1.0.0",
+    "fs-extra": "^6.0.1",
+    "json-rpc2": "^1.0.2"
+  }
+}
