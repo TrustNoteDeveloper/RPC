@@ -17,7 +17,6 @@ node rpc_service.js
 ## API
 
 
-```
 The node works as usual, plus it listens on port 6332 of loopback interface (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  The commands are `getnewaddress`, `getbalance`, `listtransactions`, `sendtoaddress`.
 
 ## getinfo
