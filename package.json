@@ -3,9 +3,9 @@
   "description": "TrustNote headless wallet",
   "author": "TrustNote",
   "version": "0.1.0",
-  "main": "start.js",
+  "main": "init.js",
   "scripts": {
-    "sync": "node start.js",
+    "init": "node init.js",
     "rpc": "node rpc_service.js"
   },
   "keywords": [
