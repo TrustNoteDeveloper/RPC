@@ -13,11 +13,10 @@ npm install
 node rpc_service.js
 
 ```
-#API
 
-If you run an exchange, you will likely want to interact with your TrustNote node via RPC interface.  By default, RPC service is not enabled for security reasons.  To enable it, you should start your headless node differently: instead of `node start.js`, cd to `play` folder and start RPC-enabled node by running [rpc_service.js](../blob/master/rpc_service.js):
-```
-node rpc_service.js
+## API
+
+
 ```
 The node works as usual, plus it listens on port 6332 of loopback interface (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  The commands are `getnewaddress`, `getbalance`, `listtransactions`, `sendtoaddress`.
 
