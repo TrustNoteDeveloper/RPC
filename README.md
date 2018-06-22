@@ -1,8 +1,19 @@
-# Light Wallet for TrustNoteDevelopers
+# How to use RPC for trustnote light wallet?
+
+1、install
 
 ```
-node rpc_service.js
+git clone https://github.com/TrustNoteDevelopers/RPC.git
+cd RPC
+npm install
 ```
+
+2、run RPC server
+```
+node rpc_service.js
+
+```
+#API
 
 If you run an exchange, you will likely want to interact with your TrustNote node via RPC interface.  By default, RPC service is not enabled for security reasons.  To enable it, you should start your headless node differently: instead of `node start.js`, cd to `play` folder and start RPC-enabled node by running [rpc_service.js](../blob/master/rpc_service.js):
 ```
@@ -131,4 +142,5 @@ if (!validationUtils.isValidAddress(address)){
   // notify user that the entered TrustNote address is invalid
 }
 ```
+
 

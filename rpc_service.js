@@ -6,7 +6,7 @@
 */
 
 "use strict";
-var headlessWallet = require('./start.js');
+var headlessWallet = require('./wallet.js');
 var conf = require('./common/conf.js');
 var eventBus = require('./common/event_bus.js');
 var db = require('./common/db.js');
