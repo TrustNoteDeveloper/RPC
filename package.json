@@ -8,7 +8,7 @@
     "init": "node wallet.js",
     "rpc": "node rpc_service.js",
     "tomain": "node ./common/tomain.js",
-    "totest": "node ./common/totest.js",
+    "totest": "node ./common/totest.js"
   },
   "keywords": [
     "wallet",
