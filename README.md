@@ -10,8 +10,7 @@ npm install
 
 2、run RPC server
 ```
-npm run init
-npm run rpc
+node rpc_server.js
 ```
 
 ## API
