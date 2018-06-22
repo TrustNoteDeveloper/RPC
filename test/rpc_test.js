@@ -1,6 +1,6 @@
 'use strict'
 
-const url = 'http://127.0.0.1:8090';
+const url = 'http://127.0.0.1:6332';
 const request = require('request-promise-native');
 
 async function test () {
@@ -13,15 +13,15 @@ async function test () {
     body.jsonrpc = "2.0";
     body.id = "1";
 
-    body.method = 'getaddressbalance';
+    // body.method = 'getaddressbalance';
     body.params = ['AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ'];
-    /*
+    
     // body.method =  'getbalance';
     // body.method =  'getalladdress';
     // body.method = 'getnewaddress';
     // body.method = 'listtransactions';
-    // body.method = 'getaddressinfo';
-    */
+    body.method = 'getaddressinfo';
+    
     opt.body = JSON.stringify(body);
     let ret  = await request(opt);
     ret = JSON.parse(ret);
@@ -34,9 +34,11 @@ async function test () {
 
 test();
 
-//curl --data '{"jsonrpc":"2.0", "id":1, "method":"getnewaddress", "params":{} }' http://127.0.0.1:8090
+//curl --data '{"jsonrpc":"2.0", "id":1, "method":"getnewaddress", "params":{} }' http://127.0.0.1:6332
 //curl --data '{"jsonrpc":"2.0", "id":1, "method":"sendtoaddress", "params":["R2CJ353CPFT6ZB372H324A5VYOGPVOKI", 5] }' http://127.0.0.1:8090
-//curl --data '{"jsonrpc":"2.0", "id":1, "method":"getbalance", "params":{} }' http://127.0.0.1:6552
+//curl --data '{"jsonrpc":"2.0", "id":1, "method":"getbalance", "params":{} }' http://127.0.0.1:6332
+//curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressbalance", "params": ["AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ"] }' http://127.0.0.1:6332
+
 
 
 

@@ -17,7 +17,7 @@ node rpc_service.js
 ## API
 
 
-The node works as usual, plus it listens on port 6332 of loopback interface (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  The commands are `getnewaddress`, `getbalance`, `listtransactions`, `sendtoaddress`.
+The node works as usual, plus it listens on port 6332 of loopback interface (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  The commands are `getnewaddress`, `getbalance`, `listtransactions`, `sendtoaddress`, `getaddressinfo`, `getaddressbalance`.
 
 ## getinfo
 
@@ -142,3 +142,22 @@ if (!validationUtils.isValidAddress(address)){
 ```
 
 
+## getaddressinfo
+
+Returns the balance and transactions  of the specified address or the entire wallet.
+
+Example usage for querying wallet balance:
+```
+$ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressinfo", "params":["AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ"] }' http://127.0.0.1:6332
+{"jsonrpc":"2.0","result":{ "objTransactions":{ ... }, "objBalance":{ ...}, id":1} }};
+```
+
+
+## getaddressbalance
+
+Only returns  the balance and transactions  of the specified address;
+
+```
+curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressbalance", "params": ["AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ"] }' http://127.0.0.1:6332
+{"jsonrpc":"2.0","result":{"address":"AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ","objBalance":{"bytes":0,"QXZVREFQWR0pM0qrZ+d+HIeJTEyMkd/rgB7/Syp6Ufk=":10000}},"id":1}
+```
