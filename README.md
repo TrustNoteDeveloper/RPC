@@ -12,7 +12,6 @@ npm install
 ```
 npm run init
 npm run rpc
-
 ```
 
 ## API
