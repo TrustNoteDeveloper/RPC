@@ -1181,7 +1181,8 @@ function sendMultiPayment(opts, handleResult)
 					// for asset payments, 2nd argument is array of chains of private elements
 					// for base asset, 2nd argument is assocPrivatePayloads which is null
 					ifOk: function(objJoint, arrChainsOfRecipientPrivateElements, arrChainsOfCosignerPrivateElements){
-						network.broadcastJoint(objJoint);
+						//light wallet do not broadcastJonit, do postJointToLightVendor
+						// network.broadcastJoint(objJoint);
 						if (!arrChainsOfRecipientPrivateElements && recipient_device_address) // send notification about public payment
 							walletGeneral.sendPaymentNotification(recipient_device_address, objJoint.unit.unit);
 						handleResult(null, objJoint.unit.unit);
