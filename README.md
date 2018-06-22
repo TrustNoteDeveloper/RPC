@@ -10,8 +10,8 @@ npm install
 
 2、run RPC server
 ```
-node rpc_service.js
-
+npm run init
+npm run rpc
 ```
 
 ## API
@@ -141,7 +141,6 @@ if (!validationUtils.isValidAddress(address)){
 }
 ```
 
-
 ## getaddressinfo
 
 Returns the balance and transactions  of the specified address or the entire wallet.
@@ -161,3 +160,6 @@ Only returns  the balance and transactions  of the specified address;
 curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressbalance", "params": ["AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ"] }' http://127.0.0.1:6332
 {"jsonrpc":"2.0","result":{"address":"AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ","objBalance":{"bytes":0,"QXZVREFQWR0pM0qrZ+d+HIeJTEyMkd/rgB7/Syp6Ufk=":10000}},"id":1}
 ```
+
+# 中文版使用方法：
+https://github.com/TrustNoteDevelopers/RPC/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8RPC
