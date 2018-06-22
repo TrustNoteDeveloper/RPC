@@ -37,3 +37,11 @@ test();
 //curl --data '{"jsonrpc":"2.0", "id":1, "method":"getnewaddress", "params":{} }' http://127.0.0.1:8090
 //curl --data '{"jsonrpc":"2.0", "id":1, "method":"sendtoaddress", "params":["R2CJ353CPFT6ZB372H324A5VYOGPVOKI", 5] }' http://127.0.0.1:8090
 //curl --data '{"jsonrpc":"2.0", "id":1, "method":"getbalance", "params":{} }' http://127.0.0.1:6552
+
+
+
+
+
+
+
+

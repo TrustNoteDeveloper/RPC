@@ -4,13 +4,13 @@
 const fs = require('fs-extra');
 var crypto = require('crypto');
 var util = require('util');
-var constants = require('./trustnote-common/constants.js');
-var conf = require('./trustnote-common/conf.js');
-var objectHash = require('./trustnote-common/object_hash.js');
-var desktopApp = require('./trustnote-common/desktop_app.js');
-var db = require('./trustnote-common/db.js');
-var eventBus = require('./trustnote-common/event_bus.js');
-var ecdsaSig = require('./trustnote-common/signature.js');
+var constants = require('./common/constants.js');
+var conf = require('./common/conf.js');
+var objectHash = require('./common/object_hash.js');
+var desktopApp = require('./common/desktop_app.js');
+var db = require('./common/db.js');
+var eventBus = require('./common/event_bus.js');
+var ecdsaSig = require('./common/signature.js');
 var Mnemonic = require('bitcore-mnemonic');
 var Bitcore = require('bitcore-lib');
 var readline = require('readline');
@@ -121,10 +121,10 @@ function writeKeys(mnemonic_phrase, deviceTempPrivKey, devicePrevTempPrivKey, on
 
 function createWallet(xPrivKey, onDone){
 	var devicePrivKey = xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size:32});
-	var device = require('./trustnote-common/device.js');
+	var device = require('./common/device.js');
 	device.setDevicePrivateKey(devicePrivKey); // we need device address before creating a wallet
 	var strXPubKey = Bitcore.HDPublicKey(xPrivKey.derive("m/44'/0'/0'")).toString();
-	var walletDefinedByKeys = require('./trustnote-common/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('./common/wallet_defined_by_keys.js');
 	walletDefinedByKeys.createWalletByDevices(strXPubKey, 0, 1, [], 'any walletName', function(wallet_id){
 		walletDefinedByKeys.issueNextAddress(wallet_id, 0, function(addressInfo){
 			onDone();
@@ -147,7 +147,7 @@ function readSingleAddress(handleAddress){
 }
 
 function prepareBalanceText(handleBalanceText){
-	var Wallet = require('./trustnote-common/wallet.js');
+	var Wallet = require('./common/wallet.js');
 	Wallet.readBalance(wallet_id, function(assocBalances){
 		var arrLines = [];
 		for (var asset in assocBalances){
@@ -238,7 +238,7 @@ setTimeout(async function(){
 		readSingleWallet(function(wallet){
 			// global
 			wallet_id = wallet;
-			var device = require('./trustnote-common/device.js');
+			var device = require('./common/device.js');
 			device.setDevicePrivateKey(devicePrivKey);
 			let my_device_address = device.getMyDeviceAddress();
 			db.query("SELECT 1 FROM extended_pubkeys WHERE device_address=?", [my_device_address], function(rows){
@@ -249,7 +249,7 @@ setTimeout(async function(){
 						console.log('passphrase is incorrect');
 						process.exit(0);
 					}, 1000);
-				require('./trustnote-common/wallet.js'); // we don't need any of its functions but it listens for hub/* messages
+				require('./common/wallet.js'); // we don't need any of its functions but it listens for hub/* messages
 				device.setTempKeys(deviceTempPrivKey, devicePrevTempPrivKey, saveTempKeys);
 				device.setDeviceName(conf.deviceName);
 				device.setDeviceHub(conf.hub);
@@ -259,7 +259,7 @@ setTimeout(async function(){
 				if (conf.permanent_pairing_secret)
 					console.log("====== my pairing code: "+my_device_pubkey+"@"+conf.hub+"#"+conf.permanent_pairing_secret);
 				if (conf.bLight){
-					var light_wallet = require('./trustnote-common/light_wallet.js');
+					var light_wallet = require('./common/light_wallet.js');
 					light_wallet.setLightVendorHost(conf.hub);
 				}
 				eventBus.emit('headless_wallet_ready');
@@ -271,15 +271,15 @@ setTimeout(async function(){
 
 
 function handlePairing(from_address){
-	var device = require('./trustnote-common/device.js');
+	var device = require('./common/device.js');
 	prepareBalanceText(function(balance_text){
 		device.sendMessageToDevice(from_address, 'text', balance_text);
 	});
 }
 
 function sendPayment(asset, amount, to_address, change_address, device_address, onDone){
-	var device = require('./trustnote-common/device.js');
-	var Wallet = require('./trustnote-common/wallet.js');
+	var device = require('./common/device.js');
+	var Wallet = require('./common/wallet.js');
 	Wallet.sendPaymentFromWallet(
 		asset, wallet_id, to_address, amount, change_address,
 		[], device_address,
@@ -299,8 +299,8 @@ function sendPayment(asset, amount, to_address, change_address, device_address, 
 }
 
 function sendAllBytesFromAddress(from_address, to_address, recipient_device_address, onDone) {
-	var device = require('./trustnote-common/device.js');
-	var Wallet = require('./trustnote-common/wallet.js');
+	var device = require('./common/device.js');
+	var Wallet = require('./common/wallet.js');
 	Wallet.sendMultiPayment({
 		asset: null,
 		to_address: to_address,
@@ -316,8 +316,8 @@ function sendAllBytesFromAddress(from_address, to_address, recipient_device_addr
 }
 
 function sendAssetFromAddress(asset, amount, from_address, to_address, recipient_device_address, onDone) {
-	var device = require('./trustnote-common/device.js');
-	var Wallet = require('./trustnote-common/wallet.js');
+	var device = require('./common/device.js');
+	var Wallet = require('./common/wallet.js');
 	Wallet.sendMultiPayment({
 		fee_paying_wallet: wallet_id,
 		asset: asset,
@@ -346,7 +346,7 @@ function issueChangeAddressAndSendPayment(asset, amount, to_address, device_addr
 		});
 	}
 	else{
-		var walletDefinedByKeys = require('./trustnote-common/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('./common/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextChangeAddress(wallet_id, function(objAddr){
 			sendPayment(asset, amount, to_address, objAddr.address, device_address, onDone);
 		});
@@ -354,21 +354,21 @@ function issueChangeAddressAndSendPayment(asset, amount, to_address, device_addr
 }
 
 function issueOrSelectNextMainAddress(handleAddress){
-	var walletDefinedByKeys = require('./trustnote-common/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('./common/wallet_defined_by_keys.js');
 	walletDefinedByKeys.issueOrSelectNextAddress(wallet_id, 0, function(objAddr){
 		handleAddress(objAddr.address);
 	});
 }
 
 function issueNextMainAddress(handleAddress){
-	var walletDefinedByKeys = require('./trustnote-common/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('./common/wallet_defined_by_keys.js');
 	walletDefinedByKeys.issueNextAddress(wallet_id, 0, function(objAddr){
 		handleAddress(objAddr.address);
 	});
 }
 
 function issueOrSelectStaticChangeAddress(handleAddress){
-	var walletDefinedByKeys = require('./trustnote-common/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('./common/wallet_defined_by_keys.js');
 	walletDefinedByKeys.readAddressByIndex(wallet_id, 1, 0, function(objAddr){
 		if (objAddr)
 			return handleAddress(objAddr.address);
@@ -387,8 +387,8 @@ function handleText(from_address, text){
 	if (fields.length > 1) params[0] = fields[1].trim();
 	if (fields.length > 2) params[1] = fields[2].trim();
 
-	var walletDefinedByKeys = require('./trustnote-common/wallet_defined_by_keys.js');
-	var device = require('./trustnote-common/device.js');
+	var walletDefinedByKeys = require('./common/wallet_defined_by_keys.js');
+	var device = require('./common/device.js');
 	switch(command){
 		case 'address':
 			if (conf.bSingleAddress)

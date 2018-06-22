@@ -41,6 +41,11 @@ function isValidAddress(address){
 	return (typeof address === "string" && address === address.toUpperCase() && isValidChash(address, 32));
 }
 
+function isValidUnit(unit){
+	return (typeof unit === "string" && isStringOfLength(unit, 44));
+}
+
+
 function isValidDeviceAddress(address){
 	return ( isStringOfLength(address, 33) && address[0] === '0' && isValidAddress(address.substr(1)) );
 }
@@ -79,3 +84,4 @@ exports.isValidAddressAnyCase = isValidAddressAnyCase;
 exports.isValidAddress = isValidAddress;
 exports.isValidDeviceAddress = isValidDeviceAddress;
 exports.isValidBase64 = isValidBase64;
+exports.isValidUnit = isValidUnit;

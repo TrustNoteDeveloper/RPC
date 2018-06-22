@@ -20,6 +20,6 @@ exports.KEYS_FILENAME = 'keys.json';
 
 // this is for runnining RPC service only, see play/rpc_service.js
 exports.rpcInterface = '127.0.0.1';
-exports.rpcPort = '8090';
+exports.rpcPort = '6332';
 
 console.log('finished headless conf');
