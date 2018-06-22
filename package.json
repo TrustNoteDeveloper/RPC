@@ -6,7 +6,9 @@
   "main": "wallet.js",
   "scripts": {
     "init": "node wallet.js",
-    "rpc": "node rpc_service.js"
+    "rpc": "node rpc_service.js",
+    "tomain": "node ./common/tomain.js",
+    "totest": "node ./common/totest.js",
   },
   "keywords": [
     "wallet",
