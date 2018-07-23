@@ -5,10 +5,10 @@
 //exports.myUrl = 'wss://mydomain.com/bb';
 exports.bServeAsHub = false;
 exports.bLight = true;
-
+exports.WS_PROTOCOL = "ws://";
 exports.storage = 'sqlite';
 
-exports.hub = 'ws://dev.trustnote.org/tn';
+exports.hub = 'dev.trustnote.org/tn';
 exports.deviceName = 'Headless';
 exports.permanent_pairing_secret = 'randomstring';
 exports.control_addresses = ['DEVICE ALLOWED TO CHAT'];
