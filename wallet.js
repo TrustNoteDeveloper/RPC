@@ -22,17 +22,19 @@ var wallet_id;
 var xPrivKey;
 
 function replaceConsoleLog(){
-	// var log_filename = conf.LOG_FILENAME || (appDataDir + '/log.txt');
-	// var writeStream = fs.createWriteStream(log_filename);
-	// console.log('---------------');
-	// console.log('From this point, output will be redirected to '+log_filename);
-	// console.log("To release the terminal, type Ctrl-Z, then 'bg'");
-	// console.log = function(){
-	// 	writeStream.write(Date().toString()+': ');
-	// 	writeStream.write(util.format.apply(null, arguments) + '\n');
-	// };
-	// console.warn = console.log;
-	// console.info = console.log;
+	/*
+	var log_filename = conf.LOG_FILENAME || (appDataDir + '/log.txt');
+	var writeStream = fs.createWriteStream(log_filename);
+	console.log('---------------');
+	console.log('From this point, output will be redirected to '+log_filename);
+	console.log("To release the terminal, type Ctrl-Z, then 'bg'");
+	console.log = function(){
+		writeStream.write(Date().toString()+': ');
+		writeStream.write(util.format.apply(null, arguments) + '\n');
+	};
+	console.warn = console.log;
+	console.info = console.log;
+	*/
 }
 
 async function readKeys(onDone){
@@ -42,45 +44,31 @@ async function readKeys(onDone){
 	if (conf.payout_address)
 		console.log("payouts allowed to address: "+conf.payout_address);
 	console.log('-----------------------');
-
 	fs.readFile(KEYS_FILENAME, 'utf8', function(err, data){
-		var rl = readline.createInterface({
-			input: process.stdin,
-			output: process.stdout,
-			//terminal: true
-		});
 		if (err){ // first start
 			console.log('failed to read keys, will gen');
 			var suggestedDeviceName = require('os').hostname() || 'Headless';
-			rl.question("Please name this device ["+suggestedDeviceName+"]: ", function(deviceName){
-				if (!deviceName)
-					deviceName = suggestedDeviceName;
-				var userConfFile = appDataDir + '/conf.json';
-				fs.writeFile(userConfFile, JSON.stringify({deviceName: deviceName}, null, '\t'), 'utf8', function(err){
-					if (err)
-						throw Error('failed to write conf.json: '+err);
-					rl.question(
-						'Device name saved to '+userConfFile+', you can edit it later if you like.\n\nPassphrase for your private keys: ',
-						function(passphrase){
-							rl.close();
-							if (process.stdout.moveCursor) process.stdout.moveCursor(0, -1);
-							if (process.stdout.clearLine)  process.stdout.clearLine();
-							var deviceTempPrivKey = crypto.randomBytes(32);
-							var devicePrevTempPrivKey = crypto.randomBytes(32);
+			var userConfFile = appDataDir + '/conf.json';
+			let  deviceName = suggestedDeviceName;
 
-							var mnemonic = new Mnemonic(); // generates new mnemonic
-							while (!Mnemonic.isValid(mnemonic.toString()))
-								mnemonic = new Mnemonic();
+			fs.writeFile(userConfFile, JSON.stringify({deviceName: deviceName}, null, '\t'), 'utf8', function(err){
+				if (err) {
+					throw Error('failed to write conf.json: '+err);
+				}
+				console.log('Device name saved to '+userConfFile+', you can edit it later if you like.');
+				var deviceTempPrivKey = crypto.randomBytes(32);
+				var devicePrevTempPrivKey = crypto.randomBytes(32);
 
-							writeKeys(mnemonic.phrase, deviceTempPrivKey, devicePrevTempPrivKey, function(){
-								console.log('keys created');
-								var xPrivKey = mnemonic.toHDPrivateKey(passphrase);
-								createWallet(xPrivKey, function(){
-									onDone(mnemonic.phrase, passphrase, deviceTempPrivKey, devicePrevTempPrivKey);
-								});
-							});
-						}
-					);
+				var mnemonic = new Mnemonic(); // generates new mnemonic
+				while (!Mnemonic.isValid(mnemonic.toString()))
+					mnemonic = new Mnemonic();
+
+				writeKeys(mnemonic.phrase, deviceTempPrivKey, devicePrevTempPrivKey, function(){
+					console.log('keys created');
+					var xPrivKey = mnemonic.toHDPrivateKey(passphrase);
+					createWallet(xPrivKey, function(){
+						onDone(mnemonic.phrase, passphrase, deviceTempPrivKey, devicePrevTempPrivKey);
+					});
 				});
 			});
 		}
@@ -263,7 +251,7 @@ setTimeout(async function(){
 					light_wallet.setLightVendorHost(conf.hub);
 				}
 				eventBus.emit('headless_wallet_ready');
-				setTimeout(replaceConsoleLog, 1000);
+				// setTimeout(replaceConsoleLog, 1000);
 			});
 		});
 	});
