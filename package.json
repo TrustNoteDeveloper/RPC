@@ -5,10 +5,9 @@
   "version": "0.1.0",
   "main": "wallet.js",
   "scripts": {
-    "init": "node wallet.js",
     "rpc": "node rpc_service.js",
-    "tomain": "node ./common/tomain.js",
-    "totest": "node ./common/totest.js"
+    "start_rpc": "mp2 start rpc_service.js",
+    "stop_rpc": "mp2 stop rpc_service.js"
   },
   "keywords": [
     "wallet",
@@ -18,11 +17,11 @@
   ],
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/trustnote/trustnote-headless.git",
+    "url": "https://github.com/TrustNoteDevelopers/RPC.git",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/trustnote/trustnote-headless/issues"
+    "url": "https://github.com/TrustNoteDevelopers/RPC/issues"
   },
   "browser": {
     "request": "browser-request",
@@ -42,7 +41,6 @@
     "sqlite": "^2.9.2",
     "sqlite3": "^4.0.0",
     "thirty-two": "^1.0.2",
-    "trustnote-common": "git+https://github.com/trustnote/trustnote-common.git",
     "ws": "^5.2.0"
   }
 }
