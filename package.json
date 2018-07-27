@@ -6,8 +6,8 @@
   "main": "wallet.js",
   "scripts": {
     "rpc": "node rpc_service.js",
-    "start_rpc": "mp2 start rpc_service.js",
-    "stop_rpc": "mp2 stop rpc_service.js"
+    "start_rpc": "pm2 start rpc_service.js",
+    "stop_rpc": "pm2 stop rpc_service.js"
   },
   "keywords": [
     "wallet",
