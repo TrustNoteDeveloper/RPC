@@ -265,13 +265,14 @@ function handlePairing(from_address){
 	});
 }
 
-function sendPayment(asset, amount, to_address, change_address, device_address, onDone){
+function sendPayment(asset, amount, to_address, change_address, device_address, messages ,onDone){
 	var device = require('./common/device.js');
 	var Wallet = require('./common/wallet.js');
 	Wallet.sendPaymentFromWallet(
 		asset, wallet_id, to_address, amount, change_address,
 		[], device_address,
 		signWithLocalPrivateKey,
+		messages,
 		function(err, unit){
 			if (device_address) {
 				if (err)
@@ -322,21 +323,21 @@ function sendAssetFromAddress(asset, amount, from_address, to_address, recipient
 	});
 }
 
-function issueChangeAddressAndSendPayment(asset, amount, to_address, device_address, onDone){
+function issueChangeAddressAndSendPayment(asset, amount, to_address, device_address, messages,onDone){
 	if (conf.bSingleAddress){
 		readSingleAddress(function(change_address){
-			sendPayment(asset, amount, to_address, change_address, device_address, onDone);
+			sendPayment(asset, amount, to_address, change_address, device_address, messages , onDone);
 		});
 	}
 	else if (conf.bStaticChangeAddress){
 		issueOrSelectStaticChangeAddress(function(change_address){
-			sendPayment(asset, amount, to_address, change_address, device_address, onDone);
+			sendPayment(asset, amount, to_address, change_address, device_address, messages ,onDone);
 		});
 	}
 	else{
 		var walletDefinedByKeys = require('./common/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextChangeAddress(wallet_id, function(objAddr){
-			sendPayment(asset, amount, to_address, objAddr.address, device_address, onDone);
+			sendPayment(asset, amount, to_address, objAddr.address, device_address, messages ,onDone);
 		});
 	}
 }

@@ -38,7 +38,7 @@ test();
 //curl --data '{"jsonrpc":"2.0", "id":1, "method":"sendtoaddress", "params":["R2CJ353CPFT6ZB372H324A5VYOGPVOKI", 5] }' http://127.0.0.1:8090
 //curl --data '{"jsonrpc":"2.0", "id":1, "method":"getbalance", "params":{} }' http://127.0.0.1:6332
 //curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressbalance", "params": ["AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ"] }' http://127.0.0.1:6332
-//curl --data '{"jsonrpc":"2.0", "id":1, "method":"sendtoaddresswithmemo", "params":["JG5HQIFERIMWW27GIND3SSUDO3VN434M", 5 , '输入你的text'] }' http://127.0.0.1:6332
+//curl --data '{"jsonrpc":"2.0", "id":1, "method":"sendtoaddresswithmessage", "params":["JVFHPXAA7FJEJU3TSTR5ETYVOXHOBR4H", 5, "请输入你的message"] }' http://127.0.0.1:6332
 
 
 
