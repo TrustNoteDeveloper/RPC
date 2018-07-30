@@ -222,7 +222,7 @@ function initRPC() {
 		if (asset && !validationUtils.isValidUnit(asset)) {
 			return cb("invalid token");
 		}
-
+		var messages = [];
 		if (amount && toAddress) {
 			if (validationUtils.isValidAddress(toAddress))
 				if (asset) {
@@ -230,13 +230,13 @@ function initRPC() {
 						if (err) {
 							return cb(err);
 						} else {
-							headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, function(err, unit) {
+							headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, messages, function(err, unit) {
 								cb(err, err ? undefined : unit);
 							});
 						}	
 					});
 				} else {
-					headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, function(err, unit) {
+					headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, messages, function(err, unit) {
 						cb(err, err ? undefined : unit);
 					});
 				}
@@ -250,45 +250,53 @@ function initRPC() {
 	});
 
 	/**
-	 * Send funds to address.
+	 * Send funds to address with message;
 	 * If address is invalid, then returns "invalid address".
 	 * @param {String} address
 	 * @param {Integer} amount
+	 * @param {String}  message text
 	 * @param {String} token (unit)
 	 * @return {String} status
 	 */
-	server.expose('sendtoaddresswithmemo', function(args, opt, cb) {
-		// var toAddress = args[0];
-		// var amount = args[1];
-		// var asset = args[2] || null;
-		// if (asset && !validationUtils.isValidUnit(asset)) {
-		// 	return cb("invalid token");
-		// }
-
-		// if (amount && toAddress) {
-		// 	if (validationUtils.isValidAddress(toAddress))
-		// 		if (asset) {
-		// 			storage.readAsset(db, asset, null, function(err, objAsset){
-		// 				if (err) {
-		// 					return cb(err);
-		// 				} else {
-		// 					headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, function(err, unit) {
-		// 						cb(err, err ? undefined : unit);
-		// 					});
-		// 				}	
-		// 			});
-		// 		} else {
-		// 			headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, function(err, unit) {
-		// 				cb(err, err ? undefined : unit);
-		// 			});
-		// 		}
-		// 	else {
-		// 		cb("invalid address");
-		// 	}
-		// }
-		// else {
-		// 	cb("wrong parameters");
-		// }
+	server.expose('sendtoaddresswithmessage', function(args, opt, cb) {
+		var toAddress = args[0];
+		var amount = args[1];
+		if (args.length <= 2 ) {
+			return cb('There is no message');
+		}
+		var msg = args[2];
+		var asset = null;
+		if (args.length > 3 ) {
+			asset = args[3] || null;
+		}
+		if (asset && !validationUtils.isValidUnit(asset)) {
+			return cb("invalid token");
+		}
+		let messages = [msg];
+		if (amount && toAddress) {
+			if (validationUtils.isValidAddress(toAddress))
+				if (asset) {
+					storage.readAsset(db, asset, null, function(err, objAsset){
+						if (err) {
+							return cb(err);
+						} else {
+							headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, messages ,function(err, unit) {
+								cb(err, err ? undefined : unit);
+							});
+						}	
+					});
+				} else {
+					headlessWallet.issueChangeAddressAndSendPayment(asset, amount, toAddress, null, messages ,function(err, unit) {
+						cb(err, err ? undefined : unit);
+					});
+				}
+			else {
+				cb("invalid address");
+			}
+		}
+		else {
+			cb("wrong parameters");
+		}
 	});
 	/**
 	 * Get funds of address.

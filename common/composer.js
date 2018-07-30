@@ -426,9 +426,15 @@ function composeJoint(params){
 	var arrSigningAddresses = params.signing_addresses || [];
 	var arrPayingAddresses = params.paying_addresses || [];
 	var arrOutputs = params.outputs || [];
-	let msg = params.messages || [];
-	msg.push(createTextMessage('你好'));
-	var arrMessages = _.clone(msg);
+	let messages = params.messages || [];
+	var arrMessages = _.clone(messages);
+	if (messages.length > 0) {
+		let createMsgs = [];
+		for ( let msg of messages ) {
+			createMsgs.push(createTextMessage(msg));
+		}
+		arrMessages = _.clone(createMsgs);
+	}
 	var assocPrivatePayloads = params.private_payloads || {}; // those that correspond to a subset of params.messages
 	var fnRetrieveMessages = params.retrieveMessages;
 	var lightProps = params.lightProps;

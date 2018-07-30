@@ -1032,7 +1032,7 @@ function readFundedAndSigningAddresses(
 }
 
 function sendPaymentFromWallet(
-		asset, wallet, to_address, amount, change_address, arrSigningDeviceAddresses, recipient_device_address, signWithLocalPrivateKey, handleResult)
+		asset, wallet, to_address, amount, change_address, arrSigningDeviceAddresses, recipient_device_address, signWithLocalPrivateKey, messages ,handleResult)
 {
 	sendMultiPayment({
 		asset: asset,
@@ -1042,7 +1042,8 @@ function sendPaymentFromWallet(
 		change_address: change_address,
 		arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 		recipient_device_address: recipient_device_address,
-		signWithLocalPrivateKey: signWithLocalPrivateKey
+		signWithLocalPrivateKey: signWithLocalPrivateKey,
+		messages: messages
 	}, handleResult);
 }
 
