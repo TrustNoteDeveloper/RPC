@@ -1,10 +1,10 @@
-# How to use TrustNote headlessRPC - the source-level development tool?
+# How to Use TrustNote headlessRPC - the Source-Level Development Tool?
 
 TrustNote headlessRPC is not just a light node but also a header-less wallet that provides the RPC services. The wallet has all features of a typical TTT wallet and it supports Remote Procedure Call (RPC). However, due to performance considerations, we do recommend applications to call it locally between processes on the same computer.
+
 The default port of headlessRPC is 6332. Due to security considerations, if headlessRPC is set up on a server, the RPC port shouldn’t be accessible to the public.
 
 ## Setting Up headlessRPC
-
 1、Install
 
 ```
@@ -21,18 +21,17 @@ npm run rpc
 ## API
 
 
-After the RPC server is running, the light node should just work, it listens port 6332 of loopback interface (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  
+Once the RPC server is running, the light node should just work, it listens port 6332 (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  
 
 The commands supported including `getnewaddress`, `getbalance`, `listtransactions`, `sendtoaddress`, `getaddressinfo`,  `getaddressbalance`, etc.
 
 ### getinfo
-
 The command returns information about the current state of the DAG.
 ```
 $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getinfo", "params":{} }' http://127.0.0.1:6332
 {"jsonrpc":"2.0","result":{"last_mci":253151,"last_stable_mci":253120,"count_unhandled":0},"id":1}
 ```
-The command has no parameters and returns and object with 3 keys:
+The command has no parameters and returns object with 3 keys:
 * `last_mci`: the highest known main chain index (MCI)
 * `last_stable_mci`: last stable MCI
 * `count_unhandled`: number of unhandled units in the queue.  Large number indicates that sync is still in progress, 0 or small number means that the node is synced (it can occasionally go above 0 when new units are received out of order).
@@ -52,7 +51,6 @@ $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getalladdress", "params":{} }
 ```
 
 ### getnewaddress
-
 This command generates a new TrustNote address in your wallet. You will likely want to use it to create a new deposit address and bind it to a user account.
 
 Example usage:
@@ -63,7 +61,6 @@ $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getnewaddress", "params":{} }
 The command has no parameters and the response is a newly generated TrustNote address (32-character string).
 
 ### getbalance
-
 Returns the balance of the specified address or the entire wallet.
 
 Example usage for querying wallet balance:
@@ -83,7 +80,6 @@ The response is an object, keyed by asset ID ("base" for notes).  For each asset
 If the queried address is invalid, you receive error "invalid address".  If the address does not belong to your wallet, you receive error "address not found".
 
 ### listtransactions
-
 Use it to get the list of transactions on the wallet or on a specific address.
 
 Example request for transactions on the entire wallet (all addresses):
@@ -126,7 +122,6 @@ Each transaction is described by an object with the following fields:
 To operate an exchange, you'll want to wait for deposits by periodically calling `listtransactions` without parameters, looking for transactions with `action`s `received` and `moved` (you need `moved` in case one user withdraws to a deposit address of another user) and identifying the user by `my_address`.
 
 ### sendtoaddress
-
 Use this command to withdraw notes.  Example usage:
 ```
 $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"sendtoaddress", "params":["BVVJ2K7ENPZZ3VYZFWQWK7ISPCATFIW3", 1000] }' http://127.0.0.1:6332
@@ -148,7 +143,6 @@ if (!validationUtils.isValidAddress(address)){
 ```
 
 ### getaddressinfo
-
 Returns the balance and transactions  of the specified address or the entire wallet.
 
 Example usage for querying wallet balance:
@@ -159,7 +153,6 @@ $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressinfo", "params":["A
 
 
 ### getaddressbalance
-
 Only returns  the balance and transactions  of the specified address;
 
 ```
@@ -167,5 +160,5 @@ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressbalance", "params": [
 {"jsonrpc":"2.0","result":{"address":"AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ","objBalance":{"bytes":0,"QXZVREFQWR0pM0qrZ+d+HIeJTEyMkd/rgB7/Syp6Ufk=":10000}},"id":1}
 ```
 
-# Chinese tutorial：
+## Chinese Tutorial：
 https://github.com/TrustNoteDocs/chinese_docs/blob/master/headlessRPC.md
