@@ -1,6 +1,11 @@
-# How to use RPC for trustnote light wallet?
+# How to use TrustNote headlessRPC - the source-level development tool?
 
-1、install
+TrustNote headlessRPC is not just a light node but also a header-less wallet that provides the RPC services. The wallet has all features of a typical TTT wallet and it supports Remote Procedure Call (RPC). However, due to performance considerations, we do recommend applications to call it locally between processes on the same computer.
+The default port of headlessRPC is 6332. Due to security considerations, if headlessRPC is set up on a server, the RPC port shouldn’t be accessible to the public.
+
+## Setting Up headlessRPC
+
+1、Install
 
 ```
 git clone https://github.com/TrustNoteDevelopers/RPC.git
@@ -8,7 +13,7 @@ cd RPC
 npm install
 ```
 
-2、run RPC server
+2、Run RPC server
 ```
 npm run rpc
 ```
@@ -16,9 +21,11 @@ npm run rpc
 ## API
 
 
-The node works as usual, plus it listens on port 6332 of loopback interface (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  The commands are `getnewaddress`, `getbalance`, `listtransactions`, `sendtoaddress`, `getaddressinfo`, `getaddressbalance`.
+After the RPC server is running, the light node should just work, it listens port 6332 of loopback interface (configured in [conf.js](../blob/master/conf.js) or conf.json) for JSON-RPC commands.  
 
-## getinfo
+The commands supported including `getnewaddress`, `getbalance`, `listtransactions`, `sendtoaddress`, `getaddressinfo`,  `getaddressbalance`, etc.
+
+### getinfo
 
 The command returns information about the current state of the DAG.
 ```
@@ -30,23 +37,23 @@ The command has no parameters and returns and object with 3 keys:
 * `last_stable_mci`: last stable MCI
 * `count_unhandled`: number of unhandled units in the queue.  Large number indicates that sync is still in progress, 0 or small number means that the node is synced (it can occasionally go above 0 when new units are received out of order).
 
-## checkAddress
+### checkAddress
 The command returns information about the current address validity.
 ```
 $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"checkAddress", "params":["QZEM3UWTG5MPKYZYRMUZLNLX5AL437O3"] }' http://127.0.0.1:6332
 {"jsonrpc":"2.0","result":{"ok"},"id":1}
 ```
 
-## getalladdress
+### getalladdress
 The command returns information about the addresses of wallet.
 ```
 $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getalladdress", "params":{} }' http://127.0.0.1:6332
 {"jsonrpc":"2.0","result":["0-0-QZEM3UWTG5MPKYZYRMUZLNLX5AL437O3"],"id":1}
 ```
 
-## getnewaddress
+### getnewaddress
 
-This command generates a new TrustNote address in your wallet.  You will likely want to use it to create a new deposit address and bind it to a user account.
+This command generates a new TrustNote address in your wallet. You will likely want to use it to create a new deposit address and bind it to a user account.
 
 Example usage:
 ```
@@ -55,7 +62,7 @@ $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getnewaddress", "params":{} }
 ```
 The command has no parameters and the response is a newly generated TrustNote address (32-character string).
 
-## getbalance
+### getbalance
 
 Returns the balance of the specified address or the entire wallet.
 
@@ -75,7 +82,7 @@ The response is an object, keyed by asset ID ("base" for notes).  For each asset
 
 If the queried address is invalid, you receive error "invalid address".  If the address does not belong to your wallet, you receive error "address not found".
 
-## listtransactions
+### listtransactions
 
 Use it to get the list of transactions on the wallet or on a specific address.
 
@@ -118,7 +125,7 @@ Each transaction is described by an object with the following fields:
 
 To operate an exchange, you'll want to wait for deposits by periodically calling `listtransactions` without parameters, looking for transactions with `action`s `received` and `moved` (you need `moved` in case one user withdraws to a deposit address of another user) and identifying the user by `my_address`.
 
-# sendtoaddress
+### sendtoaddress
 
 Use this command to withdraw notes.  Example usage:
 ```
@@ -140,7 +147,7 @@ if (!validationUtils.isValidAddress(address)){
 }
 ```
 
-## getaddressinfo
+### getaddressinfo
 
 Returns the balance and transactions  of the specified address or the entire wallet.
 
@@ -151,7 +158,7 @@ $ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressinfo", "params":["A
 ```
 
 
-## getaddressbalance
+### getaddressbalance
 
 Only returns  the balance and transactions  of the specified address;
 
@@ -160,5 +167,5 @@ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressbalance", "params": [
 {"jsonrpc":"2.0","result":{"address":"AC32OSLNT64L2B2GARP7SNFDPR3WDNZZ","objBalance":{"bytes":0,"QXZVREFQWR0pM0qrZ+d+HIeJTEyMkd/rgB7/Syp6Ufk=":10000}},"id":1}
 ```
 
-# 中文版使用方法：
+# Chinese tutorial：
 https://github.com/TrustNoteDocs/chinese_docs/blob/master/headlessRPC.md
