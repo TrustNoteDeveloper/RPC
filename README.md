@@ -10,7 +10,7 @@ npm install
 
 2、run RPC server
 ```
-node rpc_service.js
+npm run rpc
 ```
 
 ## API
@@ -161,4 +161,4 @@ curl --data '{"jsonrpc":"2.0", "id":1, "method":"getaddressbalance", "params": [
 ```
 
 # 中文版使用方法：
-https://github.com/TrustNoteDevelopers/RPC/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8RPC
+https://github.com/TrustNoteDocs/chinese_docs/blob/master/headlessRPC.md
